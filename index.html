@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library Management Practice App</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">📚</span>
+          <span class="logo-text">Library Lab</span>
+        </div>
+        <nav class="nav">
+          <button class="nav-item active" data-view="books">Books</button>
+          <button class="nav-item" data-view="members">Members</button>
+          <button class="nav-item" data-view="loans">Loans</button>
+        </nav>
+        <div class="sidebar-footer">
+          <span class="badge">localStorage demo</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h1 id="view-title">Books</h1>
+            <p class="subtitle">
+              Simple library app for practicing DevOps (build, test, deploy).
+            </p>
+          </div>
+          <div class="topbar-actions">
+            <button id="reset-data-btn" class="btn ghost">Reset Demo Data</button>
+          </div>
+        </header>
+
+        <section class="content">
+          <!-- Books View -->
+          <section class="panel" id="view-books">
+            <div class="panel-header">
+              <h2>Books</h2>
+              <button id="add-book-btn" class="btn primary">Add Book</button>
+            </div>
+            <div class="filters">
+              <input
+                type="text"
+                id="book-search"
+                placeholder="Search by title, author or ISBN..."
+              />
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>ISBN</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="books-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Members View -->
+          <section class="panel hidden" id="view-members">
+            <div class="panel-header">
+              <h2>Members</h2>
+              <button id="add-member-btn" class="btn primary">Add Member</button>
+            </div>
+            <div class="filters">
+              <input
+                type="text"
+                id="member-search"
+                placeholder="Search by name or email..."
+              />
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Member ID</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="members-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- Loans View -->
+          <section class="panel hidden" id="view-loans">
+            <div class="panel-header">
+              <h2>Loans</h2>
+              <button id="add-loan-btn" class="btn primary">Create Loan</button>
+            </div>
+            <div class="filters">
+              <select id="loan-filter">
+                <option value="all">All</option>
+                <option value="active">Active</option>
+                <option value="returned">Returned</option>
+              </select>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Book</th>
+                    <th>Member</th>
+                    <th>Loan Date</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="loans-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <!-- Dialogs -->
+    <div class="modal-backdrop hidden" id="modal-backdrop"></div>
+
+    <dialog class="modal" id="book-modal">
+      <form method="dialog" id="book-form">
+        <header class="modal-header">
+          <h2 id="book-modal-title">Add Book</h2>
+        </header>
+        <div class="modal-body">
+          <input type="hidden" id="book-id" />
+          <label>
+            Title
+            <input type="text" id="book-title" required />
+          </label>
+          <label>
+            Author
+            <input type="text" id="book-author" required />
+          </label>
+          <label>
+            ISBN
+            <input type="text" id="book-isbn" required />
+          </label>
+        </div>
+        <footer class="modal-footer">
+          <button type="button" class="btn ghost" data-close>Cancel</button>
+          <button type="submit" class="btn primary">Save</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="member-modal">
+      <form method="dialog" id="member-form">
+        <header class="modal-header">
+          <h2 id="member-modal-title">Add Member</h2>
+        </header>
+        <div class="modal-body">
+          <input type="hidden" id="member-id" />
+          <label>
+            Name
+            <input type="text" id="member-name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" id="member-email" required />
+          </label>
+        </div>
+        <footer class="modal-footer">
+          <button type="button" class="btn ghost" data-close>Cancel</button>
+          <button type="submit" class="btn primary">Save</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="loan-modal">
+      <form method="dialog" id="loan-form">
+        <header class="modal-header">
+          <h2 id="loan-modal-title">Create Loan</h2>
+        </header>
+        <div class="modal-body">
+          <input type="hidden" id="loan-id" />
+          <label>
+            Book
+            <select id="loan-book" required></select>
+          </label>
+          <label>
+            Member
+            <select id="loan-member" required></select>
+          </label>
+          <label>
+            Loan Date
+            <input type="date" id="loan-date" required />
+          </label>
+          <label>
+            Due Date
+            <input type="date" id="loan-due-date" required />
+          </label>
+        </div>
+        <footer class="modal-footer">
+          <button type="button" class="btn ghost" data-close>Cancel</button>
+          <button type="submit" class="btn primary">Save</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,20 @@
+{
+  "name": "library-management-practice-app",
+  "version": "1.0.0",
+  "description": "Simple HTML/CSS/JS library management app for DevOps practice (build, test, deploy).",
+  "scripts": {
+    "start": "npx serve .",
+    "lint": "echo \"No lint step configured\""
+  },
+  "keywords": [
+    "library",
+    "devops",
+    "practice",
+    "html",
+    "css",
+    "javascript"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+
